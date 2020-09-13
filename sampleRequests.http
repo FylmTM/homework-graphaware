@@ -1,0 +1,60 @@
+GET localhost:8080/pizza
+Content-Type: application/json
+Authorization: Basic YWxjYXBvbmU6cHdk
+
+###
+GET localhost:8080/pizza?topping=Cheddar
+Content-Type: application/json
+Authorization: Basic YWxjYXBvbmU6cHdk
+
+###
+POST localhost:8080/pizza
+Content-Type: application/json
+Authorization: Basic YWxjYXBvbmU6cHdk
+
+{
+  "name": "hawaii",
+  "toppings": [
+    "pineapple",
+    "cheese",
+    "ham",
+    "tomatoes"
+  ],
+  "price": 12.0
+}
+
+###
+POST localhost:8080/purchase/addPizza
+Content-Type: application/json
+Authorization: Basic YWxjYXBvbmU6cHdk
+
+{
+  "id": 1,
+  "name": "hawaii",
+  "toppings": [
+    "pineapple",
+    "cheese",
+    "ham",
+    "tomatoes"
+  ]
+}
+
+###
+POST localhost:8080/purchase/submitOrder
+Content-Type: application/json
+Authorization: Basic YWxjYXBvbmU6cHdk
+
+###
+GET localhost:8080/purchase/pickPurchase
+Content-Type: application/json
+Authorization: Basic Y2hlZmY6cHdk
+
+###
+GET localhost:8080/purchase/currentPurchase
+Content-Type: application/json
+Authorization: Basic Y2hlZmY6cHdk
+
+###
+PUT localhost:8080/purchase/completePurchase/6
+Content-Type: application/json
+Authorization: Basic Y2hlZmY6cHdk
