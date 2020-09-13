@@ -1,0 +1,9 @@
+version: '3.7'
+services:
+  postgres:
+    image: postgres:12
+    environment:
+      POSTGRES_PASSWORD: gennaro
+      POSTGRES_USER: pizzeria
+    ports:
+      - 5432:5432
