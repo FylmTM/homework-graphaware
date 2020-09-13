@@ -9,11 +9,7 @@ import com.graphaware.pizzeria.repository.PurchaseRepository;
 import com.graphaware.pizzeria.security.PizzeriaUserPrincipal;
 
 import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -111,25 +107,25 @@ public class PurchaseService {
 
     private Double computeAmount(List<Pizza> pizzas) {
         double totalPrice = 0;
-        if (pizzas == null) {
+        if (pizzas == null || pizzas.isEmpty()) {
             return 0.0;
         }
+
         // buy a pineapple pizza, get 10% off the others
-        boolean applyPineappleDiscount = false;
+        boolean applyPineappleDiscount = pizzas.stream()
+                .anyMatch((p) -> p.getToppings().contains("pineapple"));
+        boolean applyFreePizzaDiscount = pizzas.size() == 3;
+        Pizza cheapestPizza = pizzas.stream()
+                .min(Comparator.comparing(Pizza::getPrice))
+                .orElse(null);
+
         for (Pizza pizza : pizzas) {
-            if (pizza.getToppings().contains("pineapple")) {
-                applyPineappleDiscount = true;
-            }
-        }
-        for (Pizza pizza : pizzas) {
-            if (pizza.getToppings().contains("pineapple")) {
+            if (applyFreePizzaDiscount && pizza == cheapestPizza) {
+                // this pizza is free
+            } else if (applyPineappleDiscount && !pizza.getToppings().contains("pineapple")) {
+                totalPrice += pizza.getPrice() * 0.9;
+            } else {
                 totalPrice += pizza.getPrice();
-            }  else {
-                if (applyPineappleDiscount) {
-                        totalPrice += pizza.getPrice() *0.9;
-                } else {
-                    totalPrice += pizza.getPrice();
-                }
             }
         }
         return totalPrice;
